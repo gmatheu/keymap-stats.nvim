@@ -1,5 +1,6 @@
 local commands = {
   report = require("keymap-stats.report").report,
+  stats = require("keymap-stats.report").stats,
 }
 
 local M = {}
@@ -12,7 +13,7 @@ function M.setup()
   end, {
     nargs = 1,
     complete = function()
-      return { "report" }
+      return { "report", "stats" }
     end,
   })
 end

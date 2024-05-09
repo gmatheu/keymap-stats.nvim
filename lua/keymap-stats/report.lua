@@ -1,5 +1,10 @@
 local M = {}
 
+function M.stats()
+  local stats = require("keymap-stats").stats
+  vim.notify(vim.inspect(stats), "info", { title = "Keymap Stats" })
+end
+
 function M.report()
   local file_path = require("keymap-stats.log").file
   local file = io.open(file_path, "r")
@@ -43,7 +48,7 @@ function M.report()
     border = {
       style = "rounded",
       text = {
-        top = "Keymap Stats",
+        top = "Keymap Usage Stats",
         top_align = "center",
       },
     },

@@ -8,6 +8,7 @@ local stats = {
   rhs_count = 0,
   excluded_rhs_lhs = {},
 }
+M.stats = stats
 
 local state = {
   excluded_rhs = {},
