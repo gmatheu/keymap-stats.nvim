@@ -1,9 +1,9 @@
 local M = {}
 
 local function instrument_which_key(count, count_keymap, notify)
-  local wk = require "which-key"
-  local wk_view = require "which-key.view"
-  local wk_util = require "which-key.util"
+  local wk = require("which-key")
+  local wk_view = require("which-key.view")
+  local wk_util = require("which-key.util")
   local _execute = wk_view.execute
   local _show = wk.show
 

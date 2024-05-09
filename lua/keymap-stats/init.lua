@@ -121,6 +121,8 @@ local function config(opts)
 end
 -- end:options.lua }}}
 
+---@diagnostic disable-next-line: unused-function
+-- luacheck: ignore 211
 local function should_include(rhs)
   return state.excluded_rhs[rhs] == nil
 end
@@ -186,21 +188,21 @@ end
 
 local function instrument_keymap(keymap)
   log.info(string.format("Existing keymap lhs:%s, mode:%s, desc:%s", keymap.lhs, keymap.mode, keymap.desc))
-  local function reset_keymap(_keymap)
-    if _keymap.callback then
+  local function reset_keymap(km)
+    if km.callback then
       local handler = function()
-        handler_meter(_keymap.lhs, _keymap.mode, _keymap.callback)
+        handler_meter(km.lhs, km.mode, km.callback)
       end
-      vim.keymap.set(_keymap.mode, _keymap.lhs, handler, {
-        desc = _keymap.desc,
-        noremap = _keymap.noremap,
-        remap = _keymap.remap,
-        silent = _keymap.silent,
-        nowait = _keymap.nowait,
+      vim.keymap.set(km.mode, km.lhs, handler, {
+        desc = km.desc,
+        noremap = km.noremap,
+        remap = km.remap,
+        silent = km.silent,
+        nowait = km.nowait,
       })
       stats.callback_count = stats.callback_count + 1
     else
-      log.debug("Keymap rhs", _keymap)
+      log.debug("Keymap rhs", km)
       -- if should_include(_keymap.lhs) then
       --   -- vim.notify(_keymap.lhs .. " >> " .. _keymap.rhs, vim.log.levels.INFO, { title = plugin_name })
       --   vim.keymap.set(_keymap.mode, _keymap.lhs, function()
@@ -228,7 +230,7 @@ local function instrument_keymap(keymap)
   -- log.debug("Keymap", keymap)
 end
 
-local function instrument(count, count_keymap, notify)
+local function instrument(_count, _count_keymap, _notify)
   -- vim.notify("Instrumented", vim.log.levels.INFO, { title = plugin_name })
   local keymaps = vim.api.nvim_get_keymap("n")
   -- log.debug("Original Keymaps", keymaps)
