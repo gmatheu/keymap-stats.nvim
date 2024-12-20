@@ -50,6 +50,19 @@ require("lazy.minit").busted({
       },
     },
     {
+      "folke/which-key.nvim",
+      event = "VeryLazy",
+      keys = {
+        {
+          "<leader>?",
+          function()
+            require("which-key").show({ global = false })
+          end,
+          desc = "Buffer Local Keymaps (which-key)",
+        },
+      },
+    },
+    {
       "folke/snacks.nvim",
       priority = 1000,
       lazy = false,
@@ -79,7 +92,7 @@ require("lazy.minit").busted({
       event = "VeryLazy",
       dependencies = {
         { "MunifTanjim/nui.nvim" },
-        { "anuvyklack/keymap-amend.nvim" },
+        { "gmatheu/keymap-amend.nvim" },
       },
     },
   },

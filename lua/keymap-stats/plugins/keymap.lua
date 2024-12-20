@@ -34,7 +34,7 @@ local function instrument_keymap(keymap, opts)
       end
       original()
       count_keymap(km.lhs, km.mode, "keymap", opts.notify, km.noremap)
-    end)
+    end, { desc = km.desc })
   end
   local function try_reset(km)
     amend_keymap(km)
