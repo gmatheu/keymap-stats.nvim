@@ -1,7 +1,7 @@
 -- Rerun tests only if their modification time changed.
 cache = true
 
-std = luajit
+std = vim
 codes = true
 
 self = false
@@ -14,14 +14,15 @@ ignore = {
 
 globals = {
   "_",
-  "TelescopeGlobalState",
-  "_TelescopeConfigurationValues",
-  "_TelescopeConfigurationPickers",
+  "describe",
+  "it",
 }
 
 -- Global objects defined by the C code
 read_globals = {
   "vim",
+  "describe",
+  "it",
 }
 
 files = {

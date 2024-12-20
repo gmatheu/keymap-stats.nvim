@@ -12,3 +12,6 @@ test-debug:
 
 test-log:
 	tail -f  .tests/data/astronvim/keymap-stats.nvim.log
+
+test-minimal:
+	nvim -u ./tests/minimal.lua tests/busted.lua

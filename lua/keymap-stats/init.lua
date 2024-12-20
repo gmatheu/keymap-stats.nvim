@@ -27,7 +27,8 @@ local defaults = {
   autoinstrument = true,
   plugins = { which_key = true, hardtime = true, keymap = true },
   debug = false or os.getenv(plugin_name:upper():gsub("-", "_") .. "_DEBUG"),
-  notify = true,
+  notify = false,
+  very_verbose = false,
   included_lhs = {},
   excluded_rhs = {},
   include_rhs = false,
@@ -66,10 +67,9 @@ function M.setup(opts)
     end
   end
   if not instrumented and M.options.autoinstrument then
-    -- try_instrument(M.options.plugins.which_key, require("keymap-stats.plugins.which-key").setup, "which-key")
-    -- try_instrument(M.options.plugins.hardtime, require("keymap-stats.plugins.hardtime").setup, "hardtime")
+    try_instrument(M.options.plugins.which_key, require("keymap-stats.plugins.which-key").setup, "which-key")
+    try_instrument(M.options.plugins.hardtime, require("keymap-stats.plugins.hardtime").setup, "hardtime")
     try_instrument(M.options.plugins.keymap, require("keymap-stats.plugins.keymap").setup, "keymap")
-    -- try_instrument(true, instrument, "default")
     instrumented = true
   end
   require("keymap-stats.command").setup()

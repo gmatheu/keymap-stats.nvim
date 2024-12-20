@@ -78,6 +78,7 @@ require("lazy.minit").busted({
       },
       event = "VeryLazy",
       dependencies = {
+        { "MunifTanjim/nui.nvim" },
         { "anuvyklack/keymap-amend.nvim" },
       },
     },
