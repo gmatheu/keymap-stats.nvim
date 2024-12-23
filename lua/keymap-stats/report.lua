@@ -42,6 +42,7 @@ function M.session()
   end)
 
   local lines = {}
+  -- Let's make this table have columns with constant width AI!
   table.insert(lines, "| Keymap | Count |")
   table.insert(lines, "|--------|-------|")
   for _, stat in ipairs(sorted_stats) do
