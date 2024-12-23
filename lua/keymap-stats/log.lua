@@ -120,8 +120,10 @@ log.new = function(config, standalone)
     if config.use_file then
       local fp = io.open(outfile, "a")
       local str = string.format("[%-4s][%s][%s] %s\n", nameupper, os.date("%Y-%m-%dT%H:%M:%S"), lineinfo, msg)
-      fp:write(str)
-      fp:close()
+      if fp then
+        fp:write(str)
+        fp:close()
+      end
     end
   end
 

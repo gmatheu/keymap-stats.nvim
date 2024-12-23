@@ -5,6 +5,8 @@ tail-log:
 truncate-log:
 	truncate -s 0 ${LOG_FILE}
 
+lint:
+	selene lua
 test:
 	nvim -l ./tests/busted.lua tests
 test-debug:
@@ -14,4 +16,4 @@ test-log:
 	tail -f  .tests/data/astronvim/keymap-stats.nvim.log
 
 test-minimal:
-	nvim -u ./tests/minimal.lua tests/busted.lua
+	nvim -u ./tests/minimal.lua tests/minimal.lua

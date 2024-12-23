@@ -1,12 +1,12 @@
-describe("Busted unit testing framework", function()
-  describe("should be awesome", function()
-    it("should be easy to use", function()
-      assert.truthy("Yup.")
-    end)
-
-    it("should be easy to use", function()
+describe("keymap-stats plugin", function()
+  describe("keymap plugin module", function()
+    it("should instrument keymaps with default opts", function()
       local api = require("keymap-stats.api")
-      require("keymap-stats.plugins.keymap").setup(api.count, api.count_keymap, true, {})
+      local keymap = require("keymap-stats.plugins.keymap")
+      keymap.setup(api.count, api.count_keymap, true, {})
+
+      assert.is_true(keymap.state.instrumented)
+      assert.is_not_nil(keymap.stats.included_lhs)
     end)
 
     -- it("should have lots of features", function()
