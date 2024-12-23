@@ -10,6 +10,7 @@ local stats = {
   excluded_rhs_lhs = {},
   included_lhs = {},
   skipped_lhs = {},
+  plugins = {},
 }
 
 M.logfile = log.file
@@ -53,23 +54,25 @@ function M.setup(opts)
   config(opts)
 
   log.debug("Config: " .. vim.inspect(opts))
-  local function try_instrument(enabled, fn, module)
+  local function try_instrument(enabled, mod, module)
     if enabled then
       local log_error = function(e)
         log.error("Instrument error: " .. e)
       end
+      local fn = mod.setup
       local result = xpcall(fn, log_error, api.count, api.count_keymap, M.options.debug, M.options)
       if result then
         log.debug("Instrumented: " .. module)
+        stats.plugins[module] = mod.stats
       else
         log.debug("Failed to instrument: " .. module)
       end
     end
   end
   if not instrumented and M.options.autoinstrument then
-    try_instrument(M.options.plugins.which_key, require("keymap-stats.plugins.which-key").setup, "which-key")
-    try_instrument(M.options.plugins.hardtime, require("keymap-stats.plugins.hardtime").setup, "hardtime")
-    try_instrument(M.options.plugins.keymap, require("keymap-stats.plugins.keymap").setup, "keymap")
+    try_instrument(M.options.plugins.which_key, require("keymap-stats.plugins.which-key"), "which-key")
+    try_instrument(M.options.plugins.hardtime, require("keymap-stats.plugins.hardtime"), "hardtime")
+    try_instrument(M.options.plugins.keymap, require("keymap-stats.plugins.keymap"), "keymap")
     instrumented = true
   end
   require("keymap-stats.command").setup()

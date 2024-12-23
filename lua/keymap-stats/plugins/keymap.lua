@@ -92,6 +92,8 @@ local function instrument(_count, _count_keymap, notify, opts)
   log.debug("Instrumentation stats: " .. string.format("%s", vim.inspect(stats)))
 
   state.instrumented = true
+
+  return stats
 end
 
 M.setup = instrument

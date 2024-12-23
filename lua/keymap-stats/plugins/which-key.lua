@@ -22,5 +22,6 @@ local function instrument_which_key(count, count_keymap, notify)
 end
 
 M.setup = instrument_which_key
+M.stats = {}
 
 return M

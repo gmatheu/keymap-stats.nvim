@@ -6,5 +6,6 @@ local function instrument_hardtime(count, count_keymap, notify)
 end
 
 M.setup = instrument_hardtime
+M.stats = {}
 
 return M
