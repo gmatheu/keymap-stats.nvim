@@ -5,6 +5,11 @@ function M.stats()
   vim.notify(vim.inspect(stats), "info", { title = "Keymap Stats" })
 end
 
+function M.session()
+  local session_state = require("keymap-stats.api").state.session
+  -- Let's display sessoin_state keymap_count into a nui.popup table AI!
+end
+
 function M.report()
   local file_path = require("keymap-stats.log").file
   local file = io.open(file_path, "r")
