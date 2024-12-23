@@ -2,8 +2,35 @@ local M = {}
 
 function M.stats()
   local stats = require("keymap-stats").stats
-  -- Let's convert this to a nui popup AI!
-  vim.notify(vim.inspect(stats), "info", { title = "Keymap Stats" })
+  local Popup = require("nui.popup")
+  local event = require("nui.utils.autocmd").event
+
+  local popup = Popup({
+    enter = true,
+    focusable = true,
+    border = {
+      style = "rounded",
+      text = {
+        top = "Keymap Stats",
+        top_align = "center",
+      },
+    },
+    position = "50%",
+    size = {
+      width = "80%",
+      height = "80%",
+    },
+  })
+
+  popup:mount()
+  popup:on(event.BufLeave, function()
+    popup:unmount()
+  end)
+
+  local content = vim.split(vim.inspect(stats), "\n")
+  vim.api.nvim_buf_set_lines(popup.bufnr, 0, -1, false, content)
+  vim.api.nvim_win_set_cursor(popup.winid, { 1, 0 })
+  vim.api.nvim_buf_set_option(popup.bufnr, "modifiable", false)
 end
 
 function M.session()
