@@ -3,6 +3,9 @@ local log = require("keymap-stats.log")
 local M = {}
 local state = {
   plugin_name = "keymaps-stats",
+  session = {
+    -- Store session keymap count here AI
+  },
 }
 local function count(lhs, mode, action, notify, type, noremap)
   noremap = noremap or false
@@ -12,6 +15,7 @@ local function count(lhs, mode, action, notify, type, noremap)
 
   lhs = vim.api.nvim_replace_termcodes(lhs, true, true, true)
   local template = "Executed lhs:%s mode:%s action:%s type:%s noremap:%s"
+  -- Add a counter for each keymap into session state AI!
   log.info(string.format(template, lhs, mode, action, type, noremap))
   if notify then
     local message = string.format("%s executed [%s]: %s", type, action, lhs)
