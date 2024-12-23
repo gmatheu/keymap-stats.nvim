@@ -2,6 +2,7 @@ local M = {}
 
 function M.stats()
   local stats = require("keymap-stats").stats
+  -- Let's convert this to a nui popup AI!
   vim.notify(vim.inspect(stats), "info", { title = "Keymap Stats" })
 end
 
@@ -42,8 +43,8 @@ function M.session()
   end)
 
   local lines = {}
-  local max_keymap_width = 6  -- "Keymap" length
-  local max_count_width = 5   -- "Count" length
+  local max_keymap_width = 6 -- "Keymap" length
+  local max_count_width = 5 -- "Count" length
 
   -- Find max widths
   for _, stat in ipairs(sorted_stats) do
@@ -52,13 +53,16 @@ function M.session()
   end
 
   -- Create header
-  local header = string.format("| %-"..max_keymap_width.."s | %-"..max_count_width.."s |", "Keymap", "Count")
+  local header = string.format("| %-" .. max_keymap_width .. "s | %-" .. max_count_width .. "s |", "Keymap", "Count")
   table.insert(lines, header)
-  table.insert(lines, "|" .. string.rep("-", max_keymap_width + 2) .. "|" .. string.rep("-", max_count_width + 2) .. "|")
+  table.insert(
+    lines,
+    "|" .. string.rep("-", max_keymap_width + 2) .. "|" .. string.rep("-", max_count_width + 2) .. "|"
+  )
 
   -- Add data rows
   for _, stat in ipairs(sorted_stats) do
-    local row = string.format("| %-"..max_keymap_width.."s | %"..max_count_width.."d |", stat.key, stat.count)
+    local row = string.format("| %-" .. max_keymap_width .. "s | %" .. max_count_width .. "d |", stat.key, stat.count)
     table.insert(lines, row)
   end
 
