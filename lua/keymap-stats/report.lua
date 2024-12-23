@@ -42,11 +42,24 @@ function M.session()
   end)
 
   local lines = {}
-  -- Let's make this table have columns with constant width AI!
-  table.insert(lines, "| Keymap | Count |")
-  table.insert(lines, "|--------|-------|")
+  local max_keymap_width = 6  -- "Keymap" length
+  local max_count_width = 5   -- "Count" length
+
+  -- Find max widths
   for _, stat in ipairs(sorted_stats) do
-    table.insert(lines, string.format("| %s | %d |", stat.key, stat.count))
+    max_keymap_width = math.max(max_keymap_width, #stat.key)
+    max_count_width = math.max(max_count_width, #tostring(stat.count))
+  end
+
+  -- Create header
+  local header = string.format("| %-"..max_keymap_width.."s | %-"..max_count_width.."s |", "Keymap", "Count")
+  table.insert(lines, header)
+  table.insert(lines, "|" .. string.rep("-", max_keymap_width + 2) .. "|" .. string.rep("-", max_count_width + 2) .. "|")
+
+  -- Add data rows
+  for _, stat in ipairs(sorted_stats) do
+    local row = string.format("| %-"..max_keymap_width.."s | %"..max_count_width.."d |", stat.key, stat.count)
+    table.insert(lines, row)
   end
 
   vim.api.nvim_buf_set_lines(popup.bufnr, 0, -1, false, lines)
