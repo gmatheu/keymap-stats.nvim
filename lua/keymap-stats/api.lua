@@ -18,8 +18,10 @@ local function count(lhs, mode, action, notify, type, noremap)
 
   local key = string.format("%s:%s:%s:%s:%s", lhs, mode, action, type, tostring(noremap))
 
-  -- Let's not count 'key' containing 'S(<any text>)' AI!
-  state.session.keymap_count[key] = (state.session.keymap_count[key] or 0) + 1
+  -- Skip counting keys containing 'S(<any text>)'
+  if not string.match(key, "S%(.*%)") then
+    state.session.keymap_count[key] = (state.session.keymap_count[key] or 0) + 1
+  end
 
   log.info(string.format(template, lhs, mode, action, type, noremap))
   if notify then
