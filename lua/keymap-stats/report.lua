@@ -7,7 +7,50 @@ end
 
 function M.session()
   local session_state = require("keymap-stats.api").state.session
-  -- Let's display sessoin_state keymap_count into a nui.popup table AI!
+  local Popup = require("nui.popup")
+  local event = require("nui.utils.autocmd").event
+
+  local popup = Popup({
+    enter = true,
+    focusable = true,
+    border = {
+      style = "rounded",
+      text = {
+        top = "Keymap Usage Stats (Session)",
+        top_align = "center",
+      },
+    },
+    position = "50%",
+    size = {
+      width = "80%",
+      height = "80%",
+    },
+  })
+
+  popup:mount()
+  popup:on(event.BufLeave, function()
+    popup:unmount()
+  end)
+
+  local sorted_stats = {}
+  for key, count in pairs(session_state.keymap_count) do
+    table.insert(sorted_stats, { key = key, count = count })
+  end
+
+  table.sort(sorted_stats, function(a, b)
+    return a.count > b.count
+  end)
+
+  local lines = {}
+  table.insert(lines, "| Keymap | Count |")
+  table.insert(lines, "|--------|-------|")
+  for _, stat in ipairs(sorted_stats) do
+    table.insert(lines, string.format("| %s | %d |", stat.key, stat.count))
+  end
+
+  vim.api.nvim_buf_set_lines(popup.bufnr, 0, -1, false, lines)
+  vim.api.nvim_win_set_cursor(popup.winid, { 1, 0 })
+  vim.api.nvim_buf_set_option(popup.bufnr, "modifiable", false)
 end
 
 function M.report()
