@@ -51,7 +51,9 @@ log.new = function(config, standalone)
   if standalone then
     obj = log
   else
-    --luacheck: ignore 331 - Value assigned to a local variable is mutated but never accessed.value assigned to variable obj is mutated but never accessed
+    -- Value assigned to a local variable is mutated but never accessed.value assigned
+    -- to variable obj is mutated but never accessed
+    --luacheck: ignore 331
     obj = {}
   end
   obj["file"] = outfile
