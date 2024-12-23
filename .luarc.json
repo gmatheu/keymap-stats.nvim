@@ -2,9 +2,10 @@
   "$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
   "diagnostics": {
     "disable": [
-            "unused-local",
-            "missing-local-export-doc"
-        ],
+      "undefined-global",
+      "unused-local",
+      "missing-local-export-doc"
+    ],
     "groupFileStatus": {
       "ambiguity": "Any",
       "await": "Any",
@@ -24,24 +25,31 @@
     ]
   },
   "runtime": {
-    "version": "Lua 5.4",
+    "version": "LuaJIT",
     "path": [
-      "script/?.lua",
-      "script/?/init.lua",
-      "test/?.lua",
-      "test/?/init.lua",
-      "script/meta/?.lua"
+      "lua/?.lua",
+      "lua/?/init.lua",
+      "tests/?.lua",
+      "tests/?/init.lua"
     ],
     "pathStrict": true
   },
+  "globals": [
+    "vim",
+    "describe",
+    "it"
+  ],
   "workspace": {
-    "maxPreload": 1000,
+    "maxPreload": 500,
     "preloadFileSize": 1000,
     "ignoreDir": [
       ".tests",
       ".repro"
     ],
-    "checkThirdParty": false
+    "checkThirdParty": false,
+    "library": [
+      "$VIMRUNTIME"
+    ]
   },
   "typeFormat": {
     "config": {
