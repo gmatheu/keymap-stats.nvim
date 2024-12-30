@@ -90,7 +90,8 @@ If the option is a boolean, number, or array, your value will overwrite the defa
 | Option Name | Type    | Default Valuae | Meaning                                                         |
 | ----------- | ------- | -------------- | --------------------------------------------------------------- |
 | `debug`     | boolean | `false`        | Debug mode (if enabled show notifications for multiple actions) |
-| ...         | ...     | ...            | ...                                                             |
+
+<!-- Let's complete this table with the available options AI! -->
 
 ## References
 
