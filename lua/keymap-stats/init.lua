@@ -24,15 +24,18 @@ local state = {
 local plugin_name = api.state.plugin_name
 
 -- @class Options
+local function get_env_var(name)
+  local env_name = plugin_name:upper():gsub("-", "_"):gsub(".", "_") .. "_" .. name:upper()
+  return os.getenv(env_name)
+end
+
 local defaults = {
   name = plugin_name,
   autoinstrument = true,
   plugins = { which_key = true, hardtime = true, keymap = true },
-  -- Extract the env variables normalization from here AI
-  debug = false or os.getenv(plugin_name:upper():gsub("-", "_"):gsub(".", "_") .. "_DEBUG"),
-  notify = false or os.getenv(plugin_name:upper():gsub("-", "_"):gsub(".", "_") .. "_NOTIFY"),
-  very_verbose = false or os.getenv(plugin_name:upper():gsub("-", "_"):gsub(".", "_") .. "_VERY_VERBOSE"),
-  -- up to here AI!
+  debug = false or get_env_var("debug"),
+  notify = false or get_env_var("notify"),
+  very_verbose = false or get_env_var("very_verbose"),
   included_lhs = {},
   excluded_rhs = {},
   include_rhs = false,
