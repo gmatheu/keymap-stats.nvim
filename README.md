@@ -87,11 +87,19 @@ If the option is a boolean, number, or array, your value will overwrite the defa
 
 ### Options
 
-| Option Name | Type    | Default Valuae | Meaning                                                         |
-| ----------- | ------- | -------------- | --------------------------------------------------------------- |
-| `debug`     | boolean | `false`        | Debug mode (if enabled show notifications for multiple actions) |
+| Option Name      | Type    | Default Value                              | Meaning                                                         |
+| ---------------- | ------- | ------------------------------------------ | --------------------------------------------------------------- |
+| `name`           | string  | `plugin_name`                              | Name of the plugin                                              |
+| `autoinstrument` | boolean | `true`                                     | Automatically instrument supported plugins on setup             |
+| `plugins`        | table   | `{ which_key = true, hardtime = true, keymap = true }` | Plugins to instrument                                |
+| `debug`          | boolean | `false`                                    | Enable debug mode (more verbose logging)                        |
+| `notify`         | boolean | `false`                                    | Enable notifications                                            |
+| `very_verbose`   | boolean | `false`                                    | Enable very verbose logging                                     |
+| `included_lhs`   | table   | `{}`                                       | List of left-hand side (LHS) keymaps to include in stats        |
+| `excluded_rhs`   | table   | `{}`                                       | List of right-hand side (RHS) keymaps to exclude from stats     |
+| `include_rhs`    | boolean | `false`                                    | Include right-hand side (RHS) keymaps in stats                  |
 
-<!-- Let's complete this table with the available options AI! -->
+Note: The `debug`, `notify`, and `very_verbose` options can also be set via environment variables.
 
 ## References
 
