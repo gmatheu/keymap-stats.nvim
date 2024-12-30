@@ -33,7 +33,7 @@ local function instrument_keymap(keymap, opts)
         vim.notify(km.lhs .. " is executed!", vim.log.levels.INFO)
       end
       original()
-      count_keymap(km.lhs, km.mode, "keymap", opts.notify, km.noremap)
+      count_keymap(km.lhs, km.mode, "keymap", opts.notify and opts.debug, km.noremap)
     end, { desc = km.desc })
   end
   local function try_reset(km)
