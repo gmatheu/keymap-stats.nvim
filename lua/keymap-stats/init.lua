@@ -29,6 +29,7 @@ local function get_env_var(name)
   return os.getenv(env_name)
 end
 
+-- This 'defaults' variable has the available options AI!
 local defaults = {
   name = plugin_name,
   autoinstrument = true,
