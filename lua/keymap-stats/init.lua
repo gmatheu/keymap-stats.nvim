@@ -18,6 +18,7 @@ M.stats = stats
 
 local state = {
   excluded_rhs = {},
+  plugins = {},
 }
 
 local plugin_name = api.state.plugin_name
@@ -27,9 +28,11 @@ local defaults = {
   name = plugin_name,
   autoinstrument = true,
   plugins = { which_key = true, hardtime = true, keymap = true },
-  debug = false or os.getenv(plugin_name:upper():gsub("-", "_") .. "_DEBUG"),
-  notify = false,
-  very_verbose = false,
+  -- Extract the env variables normalization from here AI
+  debug = false or os.getenv(plugin_name:upper():gsub("-", "_"):gsub(".", "_") .. "_DEBUG"),
+  notify = false or os.getenv(plugin_name:upper():gsub("-", "_"):gsub(".", "_") .. "_NOTIFY"),
+  very_verbose = false or os.getenv(plugin_name:upper():gsub("-", "_"):gsub(".", "_") .. "_VERY_VERBOSE"),
+  -- up to here AI!
   included_lhs = {},
   excluded_rhs = {},
   include_rhs = false,
@@ -64,6 +67,7 @@ function M.setup(opts)
       if result then
         log.debug("Instrumented: " .. module)
         stats.plugins[module] = mod.stats
+        state.plugins[module] = mod.state
       else
         log.debug("Failed to instrument: " .. module)
       end
@@ -71,9 +75,15 @@ function M.setup(opts)
   end
   if not instrumented and M.options.autoinstrument then
     try_instrument(M.options.plugins.which_key, require("keymap-stats.plugins.which-key"), "which-key")
-    try_instrument(M.options.plugins.hardtime, require("keymap-stats.plugins.hardtime"), "hardtime")
     try_instrument(M.options.plugins.keymap, require("keymap-stats.plugins.keymap"), "keymap")
+    try_instrument(M.options.plugins.hardtime, require("keymap-stats.plugins.hardtime"), "hardtime")
     instrumented = true
+    if opts.notify then
+      vim.notify("hardtime instrumentation completed", vim.log.levels.INFO, { title = plugin_name })
+      if opts.debug then
+        vim.notify("State: " .. vim.inspect(state), vim.log.levels.DEBUG, { title = plugin_name })
+      end
+    end
   end
   require("keymap-stats.command").setup()
 end
