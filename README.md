@@ -103,6 +103,36 @@ Note: The `debug`, `notify`, and `very_verbose` options can also be set via envi
 
 ## Contributing
 
+When reporting issues or contributing to the project, it's helpful to create a minimal reproduction of the problem. This makes it easier for maintainers to understand and resolve the issue. Here's how you can create a `repro.lua` file:
+
+1. Create a new file named `repro.lua` in the root of the project.
+2. Add the following content to the file:
+
+```lua
+vim.env.LAZY_STDPATH = ".repro"
+load(vim.fn.system("curl -s https://raw.githubusercontent.com/folke/lazy.nvim/main/bootstrap.lua"))()
+
+require("lazy.minit").repro({
+  spec = {
+    "gmatheu/keymap-stats.nvim",
+    -- Add any other plugins that might be relevant to the issue
+  },
+})
+
+-- Add any additional configuration or steps to reproduce the issue
+
+```
+
+3. Run the repro file with:
+
+```
+nvim -u repro.lua
+```
+
+This will create a minimal Neovim environment with keymap-stats.nvim and any other necessary plugins installed. You can then add the steps to reproduce the issue in the repro file.
+
+When submitting an issue, please include the contents of your `repro.lua` file and any additional steps needed to reproduce the problem.
+
 ## References
 
 Most of the code is "inspired" by these projects:
