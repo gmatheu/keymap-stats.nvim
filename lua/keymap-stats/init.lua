@@ -30,14 +30,23 @@ local function get_env_var(name)
 end
 
 local defaults = {
+  -- Name of the plugin
   name = plugin_name,
+  -- Automatically instrument supported plugins on setup
   autoinstrument = true,
+  -- Plugins to instrument
   plugins = { which_key = true, hardtime = true, keymap = true },
+  -- Enable debug mode (more verbose logging)
   debug = false or get_env_var("debug"),
+  -- Enable notifications
   notify = false or get_env_var("notify"),
+  -- Enable very verbose logging
   very_verbose = false or get_env_var("very_verbose"),
+  -- List of left-hand side (LHS) keymaps to include in stats
   included_lhs = {},
+  -- List of right-hand side (RHS) keymaps to exclude from stats
   excluded_rhs = {},
+  -- Include right-hand side (RHS) keymaps in stats
   include_rhs = false,
 }
 --
