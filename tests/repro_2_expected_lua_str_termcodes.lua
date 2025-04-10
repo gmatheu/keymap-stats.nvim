@@ -9,9 +9,10 @@ vim.g.maplocalleader = " "
 -- Enable number and relative number
 vim.opt.number = true
 vim.opt.relativenumber = true
+vim.g.nomore = true
 
 vim.keymap.set("n", "<Leader>,", "<cmd> :e#<CR>", { desc = "Switch Last buffer" })
-vim.keymap.set("n", "<Leader>ss", "<cmd>KeymapStats session<CR>", { desc = "Shor current session stats" })
+vim.keymap.set("n", "<Leader>ss", "<cmd>KeymapStats session<CR>", { desc = "Show current session stats" })
 
 -- Setup lazy.nvim
 require("lazy.minit").repro({
@@ -19,6 +20,7 @@ require("lazy.minit").repro({
     {
       "folke/snacks.nvim",
       version = "*",
+      lazy = true,
       opts = {
         notifier = { enabled = true },
       },
@@ -29,6 +31,15 @@ require("lazy.minit").repro({
             vim.notify("Test action")
           end,
           mode = { "n", "v" },
+          desc = "DESC LOCAL LEADER",
+        },
+        {
+          "<Leader>c",
+          function()
+            vim.notify("Test action")
+          end,
+          mode = { "n", "v" },
+          desc = "DESC LEADER",
         },
       },
     },
@@ -37,16 +48,59 @@ require("lazy.minit").repro({
       opts = {
         autoinstrument = true,
         plugins = { which_key = false, hardtime = false, keymap = true },
-        debug = false,
-        very_verbose = false,
+        debug = true,
+        very_verbose = true,
         notify = true,
         include_rhs = false,
       },
       event = "VeryLazy",
       dependencies = {
         { "MunifTanjim/nui.nvim" },
-        { "anuvyklack/keymap-amend.nvim" },
+        { "gmatheu/keymap-amend.nvim" },
       },
     },
   },
+})
+
+local lazyState = {
+  count = 0,
+  veryLazyTriggered = false,
+  veryLazyCount = 0,
+}
+vim.api.nvim_create_autocmd("User", {
+  pattern = "LazyDone",
+  callback = function()
+    vim.notify("LazyDone")
+  end,
+})
+vim.api.nvim_create_autocmd("User", {
+  pattern = "LazyVimStarted",
+  callback = function()
+    vim.notify("LazyVimStarted")
+  end,
+})
+
+vim.api.nvim_create_autocmd("User", {
+  pattern = "VeryLazy",
+  callback = function()
+    vim.notify("Very Lazy")
+    lazyState.veryLazyTriggered = true
+  end,
+})
+vim.api.nvim_create_autocmd("User", {
+  pattern = "LazyLoad",
+  callback = function(args)
+    lazyState.count = lazyState.count + 1
+    if lazyState.veryLazyTriggered then
+      lazyState.veryLazyCount = lazyState.veryLazyCount + 1
+      vim.notify(
+        "Plugin loaded (" .. lazyState.veryLazyCount .. "/" .. lazyState.count .. "): " .. vim.inspect(args.data)
+      )
+      local plugin = require("lazy.core.config").plugins[args.data]
+      vim.notify("Plugin: " .. vim.inspect(plugin._.handlers.keys))
+      require("keymap-stats.plugins.keymap").setup()
+    else
+      vim.notify("Plugin loaded (" .. lazyState.count .. "): " .. vim.inspect(args.data))
+    end
+  end,
 })
