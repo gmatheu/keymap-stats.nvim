@@ -65,6 +65,27 @@ local function config(opts)
 end
 -- end:options.lua }}}
 
+local function instrument_mode_switch(debug)
+  vim.api.nvim_create_autocmd("ModeChanged", {
+    pattern = "*:*",
+    callback = function()
+      local current_mode = vim.fn.mode()
+      local visual_mode = vim.fn.visualmode()
+      local current_state = vim.fn.state()
+      log.info(
+        "Mode changed: " .. "mode:" .. current_mode .. ", visual_mode:" .. visual_mode .. ", state:" .. current_state
+      )
+      if debug then
+        vim.notify(
+          "Mode changed: " .. current_mode .. visual_mode .. state,
+          vim.log.levels.DEBUG,
+          { title = plugin_name }
+        )
+      end
+    end,
+  })
+end
+
 function M.setup(opts)
   config(opts)
 
@@ -86,6 +107,7 @@ function M.setup(opts)
     end
   end
   if not instrumented and M.options.autoinstrument then
+    instrument_mode_switch(M.options.debug)
     try_instrument(M.options.plugins.which_key, require("keymap-stats.plugins.which-key"), "which-key")
     try_instrument(M.options.plugins.keymap, require("keymap-stats.plugins.keymap"), "keymap")
     try_instrument(M.options.plugins.hardtime, require("keymap-stats.plugins.hardtime"), "hardtime")
