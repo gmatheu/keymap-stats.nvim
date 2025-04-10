@@ -1,6 +1,7 @@
 local M = {}
 
 local api = require("keymap-stats.api")
+local json = require("json")
 local log = require("keymap-stats.log")
 
 local instrumented = false
@@ -17,6 +18,12 @@ M.logfile = log.file
 M.stats = stats
 
 local state = {
+  session = {
+    id = nil,
+    user = {
+      id = nil,
+    },
+  },
   excluded_rhs = {},
   plugins = {},
 }
@@ -86,7 +93,57 @@ local function instrument_mode_switch(debug)
   })
 end
 
+local state_file = string.format("%s/%s.json", vim.api.nvim_call_function("stdpath", { "data" }), api.state.plugin_name)
+M.clear_state = function()
+  local fp = io.open(state_file, "w")
+  if fp then
+    fp:write("{}")
+    fp:close()
+  end
+  log.info("Cleared state file:" .. state_file)
+  vim.notify("Cleared state file:" .. state_file, vim.log.levels.INFO, { title = plugin_name })
+end
+local function load_state()
+  local function create_pseudo_uuid()
+    local value = ""
+    math.randomseed(os.time())
+    for i = 1, 32 do
+      local hcar = string.char(math.random(65, 65 + 25)):lower()
+      if i == 8 or i == 13 or i == 18 or i == 23 then
+        value = value .. "-"
+      end
+      value = value .. hcar
+    end
+    return value
+  end
+
+  state.session.id = create_pseudo_uuid()
+  local fp = io.open(state_file, "r")
+  local table
+  if fp then
+    local readjson = fp:read("*a")
+    table = json.decode(readjson)
+    fp:close()
+  else
+    log.info("Creating state file:" .. state_file)
+    table = { id = create_pseudo_uuid() }
+    log.info("Created state file:" .. vim.inspect(table))
+    vim.notify("Create state file:" .. vim.inspect(table), vim.log.levels.INFO, { title = plugin_name })
+    local write_fp = io.open(state_file, "w+")
+    if write_fp then
+      write_fp:write(json.encode(table))
+      write_fp:close()
+    end
+  end
+  state.session.user = table
+
+  log.debug("Current state: " .. vim.inspect(table))
+end
+
 function M.setup(opts)
+  load_state()
+
+  log.info("Starting session: user:" .. M.state.session.user.id .. " session:" .. M.state.session.id)
   config(opts)
 
   log.debug("Config: " .. vim.inspect(opts))
