@@ -13,8 +13,8 @@ local function count(lhs, mode, action, notify, type, noremap)
   action = action or "default"
   type = type or "keymap"
 
-  lhs = vim.api.nvim_replace_termcodes(lhs, true, true, true)
-  local template = "Executed lhs:%s mode:%s action:%s type:%s noremap:%s"
+  lhs = vim.api.nvim_replace_termcodes(lhs, true, true, false)
+  local template = "Executed lhs:%s: mode:%s: action:%s: type:%s: noremap:%s:"
 
   local key = string.format("%s:%s:%s:%s:%s", lhs, mode, action, type, tostring(noremap))
 

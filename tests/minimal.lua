@@ -7,6 +7,7 @@ vim.g.mapleader = ","
 vim.g.maplocalleader = " "
 -- Enable number and relative number
 vim.opt.number = true
+
 vim.opt.relativenumber = true
 
 vim.keymap.set("n", "<Leader>,", "<cmd> :e#<CR>", { desc = "Switch Last buffer" })
@@ -64,13 +65,16 @@ require("lazy.minit").repro({
           timeout = 3000,
         },
       },
+      keys = {
+	  { "<leader>fk", function() Snacks.picker.keymaps() end, desc = "Keymaps" },
+      }
     },
     {
       dir = vim.uv.cwd(),
       opts = {
         autoinstrument = true,
         plugins = { which_key = false, hardtime = false, keymap = true },
-        debug = false,
+        debug = true,
         very_verbose = false,
         notify = false,
         include_rhs = false,

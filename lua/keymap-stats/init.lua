@@ -39,6 +39,7 @@ local defaults = {
   included_lhs = {},
   excluded_rhs = {},
   include_rhs = false,
+  default_neovim_keymaps = {},
 }
 --
 -- @type Options
