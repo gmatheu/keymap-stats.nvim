@@ -175,8 +175,20 @@ local function instrument_keymap(keymap, opts)
         log.info("Original: " .. vim.inspect(original))
         vim.notify(km.lhs .. " is executed!", vim.log.levels.INFO)
       end
-      original()
-      count_keymap(km.lhs, km.mode, "keymap", opts.notify and opts.debug, km.noremap)
+      -- Capture the command multiplier (count) before executing the original
+      -- vim.v.count is 0 when no count is provided, vim.v.count1 is always at least 1
+      local cnt = vim.v.count
+      if cnt == 0 then
+        cnt = 1
+      end
+      -- For count == 1, just call original() which handles mode transitions correctly
+      -- For count > 1, use vim.cmd.normal which properly applies counts without breaking mode changes
+      if cnt > 1 and km.rhs and type(km.rhs) == "string" then
+        vim.cmd.normal({ cnt .. km.lhs, bang = true })
+      else
+        original()
+      end
+      count_keymap(km.lhs, km.mode, "keymap", opts.notify and opts.debug, km.noremap, cnt)
     end, { desc = km.desc })
   end
   local function try_reset(km)
