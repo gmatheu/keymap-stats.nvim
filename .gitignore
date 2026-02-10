@@ -3,3 +3,4 @@
 .tests
 doc
 luacov.stats.out
+luacov.report.html

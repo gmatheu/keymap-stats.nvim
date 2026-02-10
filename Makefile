@@ -20,3 +20,12 @@ test-log:
 
 test-minimal:
 	nvim -u ./tests/minimal.lua tests/minimal.lua
+
+test-coverage:
+	COVERAGE=1 nvim -l ./tests/busted.lua tests
+	@echo "Generating coverage report..."
+	@luacov || echo "luacov not found. Install with: luarocks install luacov"
+	@echo "Coverage report generated: luacov.report.html"
+
+view-coverage:
+	@xdg-open luacov.report.html 2>/dev/null || open luacov.report.html 2>/dev/null || echo "Open luacov.report.html in your browser"

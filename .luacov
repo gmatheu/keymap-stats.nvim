@@ -1,0 +1,30 @@
+-- LuaCov Configuration
+-- For more options see: https://github.com/mpeterv/luacov
+
+-- Reporter type: html, default, lcov, etc.
+reporter = "html"
+reportfile = "luacov.report.html"
+
+-- Include only files matching these patterns
+include = {
+  "lua/",
+}
+
+-- Exclude files matching these patterns
+exclude = {
+  "tests/",
+  ".tests/",
+  "lua/lazy/",
+}
+
+-- Configuration for HTML reporter
+coverage = {
+  min_coverage = 80,  -- Minimum coverage threshold (%)
+  colorized = true,   -- Use colors in terminal output
+}
+
+-- Show uncovered lines in report
+show_missing = true
+
+-- Sort uncovered lines by frequency
+sort_missing_by_frequency = false

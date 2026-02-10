@@ -1,6 +1,21 @@
 #!/usr/bin/env -S nvim -l
 
 vim.env.LAZY_STDPATH = ".tests"
+
+-- Enable coverage if COVERAGE environment variable is set
+if os.getenv("COVERAGE") == "1" then
+  vim.env.COVERAGE = "1"
+  -- Load luacov for coverage tracking using busted's luacov module pattern
+  local ok, luacov_runner = pcall(require, "luacov.runner")
+  if ok then
+    luacov_runner()
+    vim.g.luacov_enabled = true
+  else
+    print("Warning: luacov not found, coverage will not be tracked")
+    print("Install with: luarocks install luacov")
+  end
+end
+
 load(vim.fn.system("curl -s https://raw.githubusercontent.com/folke/lazy.nvim/main/bootstrap.lua"))()
 
 vim.opt.rtp:prepend(".")
