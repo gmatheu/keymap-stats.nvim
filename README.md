@@ -87,10 +87,51 @@ If the option is a boolean, number, or array, your value will overwrite the defa
 
 ### Options
 
-| Option Name | Type    | Default Valuae | Meaning                                                         |
-| ----------- | ------- | -------------- | --------------------------------------------------------------- |
-| `debug`     | boolean | `false`        | Debug mode (if enabled show notifications for multiple actions) |
-| ...         | ...     | ...            | ...                                                             |
+| Option Name      | Type    | Default Value                                          | Meaning                                                     |
+| ---------------- | ------- | ------------------------------------------------------ | ----------------------------------------------------------- |
+| `name`           | string  | `plugin_name`                                          | Name of the plugin                                          |
+| `autoinstrument` | boolean | `true`                                                 | Automatically instrument supported plugins on setup         |
+| `plugins`        | table   | `{ which_key = true, hardtime = true, keymap = true }` | Plugins to instrument                                       |
+| `debug`          | boolean | `false`                                                | Enable debug mode (more verbose logging)                    |
+| `notify`         | boolean | `false`                                                | Enable notifications                                        |
+| `very_verbose`   | boolean | `false`                                                | Enable very verbose logging                                 |
+| `included_lhs`   | table   | `{}`                                                   | List of left-hand side (LHS) keymaps to include in stats    |
+| `excluded_rhs`   | table   | `{}`                                                   | List of right-hand side (RHS) keymaps to exclude from stats |
+| `include_rhs`    | boolean | `false`                                                | Include right-hand side (RHS) keymaps in stats              |
+
+Note: The `debug`, `notify`, and `very_verbose` options can also be set via environment variables.
+
+## Contributing
+
+When reporting issues or contributing to the project, it's helpful to create a minimal reproduction of the problem. This makes it easier for maintainers to understand and resolve the issue. Here's how you can create a `repro.lua` file:
+
+1. Create a new file named `repro.lua` in the root of the project.
+2. Add the following content to the file:
+
+```lua
+vim.env.LAZY_STDPATH = ".repro"
+load(vim.fn.system("curl -s https://raw.githubusercontent.com/folke/lazy.nvim/main/bootstrap.lua"))()
+
+require("lazy.minit").repro({
+  spec = {
+    "gmatheu/keymap-stats.nvim",
+    -- Add any other plugins that might be relevant to the issue
+  },
+})
+
+-- Add any additional configuration or steps to reproduce the issue
+
+```
+
+3. Run the repro file with:
+
+```
+nvim -u repro.lua
+```
+
+This will create a minimal Neovim environment with keymap-stats.nvim and any other necessary plugins installed. You can then add the steps to reproduce the issue in the repro file.
+
+When submitting an issue, please include the contents of your `repro.lua` file and any additional steps needed to reproduce the problem.
 
 ## References
 

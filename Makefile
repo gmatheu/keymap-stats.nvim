@@ -20,3 +20,7 @@ test-log:
 
 test-minimal:
 	nvim -u ./tests/minimal.lua tests/minimal.lua
+
+REPRO=mini.comment
+test-repro:
+	nvim -u ./tests/repro_${REPRO}.lua tests/repro_${REPRO}.lua

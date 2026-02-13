@@ -81,15 +81,31 @@ require("lazy.minit").busted({
       },
     },
     {
+      "m4xshen/hardtime.nvim",
+      opts = {},
+      priority = 900,
+      enabled = true,
+      -- lazy = true,
+      event = "VeryLazy",
+      setup = function(opts)
+        require("hardtime").setup(opts)
+        require("hardtime").enable()
+        vim.notify("Hardtime enabled")
+      end,
+    },
+    {
       dir = vim.uv.cwd(),
+      priority = 1000,
       opts = {
         autoinstrument = true,
-        plugins = { which_key = false, hardtime = false, keymap = true },
+        plugins = { which_key = true, hardtime = false, keymap = true },
         debug = true,
         notify = true,
+        very_verbose = true,
         include_rhs = false,
       },
       event = "VeryLazy",
+      -- lazy = false,
       dependencies = {
         { "MunifTanjim/nui.nvim" },
         { "gmatheu/keymap-amend.nvim" },
