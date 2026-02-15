@@ -144,6 +144,14 @@ log.new = function(config, standalone)
       end)
     end
   end
+
+  obj.truncate = function()
+    local fp = io.open(outfile, "w")
+    obj.info("Truncating log file. EOM")
+    if fp then
+      fp:close()
+    end
+  end
 end
 
 log.new(default_config, true)
