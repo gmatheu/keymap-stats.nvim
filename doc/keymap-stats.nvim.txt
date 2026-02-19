@@ -1,4 +1,4 @@
-*keymap-stats.nvim.txt*    For Neovim >= 0.7.0   Last change: 2026 February 10
+*keymap-stats.nvim.txt*    For Neovim >= 0.7.0   Last change: 2026 February 19
 
 ==============================================================================
 Table of Contents                        *keymap-stats.nvim-table-of-contents*
