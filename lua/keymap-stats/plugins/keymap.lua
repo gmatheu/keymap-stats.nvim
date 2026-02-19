@@ -163,6 +163,13 @@ local function instrument_keymap(keymap, opts)
     string.format("Existing keymap lhs:%s: mode:%s: desc:%s: rhs:%s:", keymap.lhs, keymap.mode, keymap.desc, keymap.rhs)
   )
 
+  -- Skip keymaps with function-based RHS as keymap-amend doesn't handle them properly
+  -- It tries to call vim.api.nvim_replace_termcodes() on the function, which fails
+  if keymap.rhs and type(keymap.rhs) == "function" then
+    log.info(string.format("Skipping function-based keymap: %s in mode %s", keymap.lhs, keymap.mode))
+    return
+  end
+
   local function amend_keymap(km)
     local keymap_fn = vim.keymap
     keymap_fn.amend = require("keymap-amend")
@@ -219,7 +226,7 @@ local function instrument(_count, _count_keymap, notify, opts)
   local o = vim.tbl_deep_extend(
     "force",
     options,
-    { dryrun = false, notify = notify, modes = { "n", "v", "i" }, plugs = false },
+    { dryrun = false, notify = notify, modes = { "n", "v", "i", "x", "s" }, plugs = false },
     opts or {}
   )
 
